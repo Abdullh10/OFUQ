@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>برنامج أفق - متابعة تطور الطلاب</title>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <style>
         :root {
             --primary-color: #2c5aa0;
@@ -34,7 +30,7 @@
         
         .container {
             width: 90%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -50,6 +46,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
         
         .logo {
@@ -57,9 +54,17 @@
             font-weight: bold;
         }
         
+        .initiative-creator {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
         nav ul {
             display: flex;
             list-style: none;
+            flex-wrap: wrap;
         }
         
         nav ul li {
@@ -91,6 +96,9 @@
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--light-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .grid {
@@ -147,10 +155,11 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            font-size: 0.9rem;
         }
         
         table th, table td {
-            padding: 12px 15px;
+            padding: 12px 10px;
             text-align: right;
             border-bottom: 1px solid #ddd;
         }
@@ -158,6 +167,8 @@
         table th {
             background-color: var(--primary-color);
             color: white;
+            position: sticky;
+            top: 0;
         }
         
         table tr:nth-child(even) {
@@ -187,13 +198,14 @@
             display: inline-block;
             background: var(--primary-color);
             color: white;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             text-decoration: none;
             transition: background 0.3s;
-            margin: 5px;
+            margin: 3px;
+            font-size: 0.85rem;
         }
         
         .btn:hover {
@@ -238,12 +250,28 @@
             margin-bottom: 20px;
         }
         
+        .creator-badge {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
         footer {
             background: var(--dark-color);
             color: white;
             text-align: center;
             padding: 20px 0;
             margin-top: 40px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
         }
         
         /* Responsive Design */
@@ -265,6 +293,19 @@
             .grid {
                 grid-template-columns: 1fr;
             }
+            
+            .section-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            table {
+                font-size: 0.8rem;
+            }
+            
+            table th, table td {
+                padding: 8px 5px;
+            }
         }
     </style>
 </head>
@@ -272,7 +313,10 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">برنامج أفق - متابعة التطور الدراسي</div>
+                <div>
+                    <div class="logo">برنامج أفق - متابعة التطور الدراسي</div>
+                    <div class="initiative-creator">صاحب المبادرة: عبدالله محمد حمدي</div>
+                </div>
                 <nav>
                     <ul>
                         <li><a href="#overview">نظرة عامة</a></li>
@@ -287,7 +331,10 @@
 
     <div class="container">
         <section id="overview" class="section">
-            <h2 class="section-title">نظرة عامة على البرنامج</h2>
+            <h2 class="section-title">
+                نظرة عامة على البرنامج
+                <div class="creator-badge">مبادرة: عبدالله محمد حمدي</div>
+            </h2>
             <div class="program-info">
                 <h3>برنامج "أفق" لرفع التحصيل الدراسي</h3>
                 <p>برنامج تعليمي يهدف إلى رفع التحصيل الدراسي وتنمية المهارات التعاونية والرقمية لطلاب الصف الأول الثانوي في مادة الكيمياء.</p>
@@ -296,19 +343,19 @@
             
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value">39</div>
+                    <div class="stat-value">38</div>
                     <div class="stat-label">عدد الطلاب</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">14.3%</div>
+                    <div class="stat-value">18.5%</div>
                     <div class="stat-label">متوسط التحسن</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">82%</div>
+                    <div class="stat-value">84%</div>
                     <div class="stat-label">نسبة الطلاب المحسنين</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">36</div>
+                    <div class="stat-value">6</div>
                     <div class="stat-label">عدد المجموعات التعاونية</div>
                 </div>
             </div>
@@ -325,15 +372,21 @@
                 <button class="btn btn-secondary" id="importDataBtn">استيراد البيانات</button>
             </div>
             
-            <div class="table-responsive">
+            <div class="table-container">
                 <table id="studentsTable">
                     <thead>
                         <tr>
-                            <th>رقم الطالب</th>
+                            <th>م</th>
                             <th>اسم الطالب</th>
-                            <th>الدرجة قبل البرنامج</th>
-                            <th>الدرجة بعد البرنامج</th>
-                            <th>مستوى التحسن</th>
+                            <th>الواجبات (قبل)</th>
+                            <th>التفاعل الصفي (قبل)</th>
+                            <th>بليكرز (قبل)</th>
+                            <th>الاختبار (قبل)</th>
+                            <th>الواجبات (بعد)</th>
+                            <th>التفاعل الصفي (بعد)</th>
+                            <th>بليكرز (بعد)</th>
+                            <th>الاختبار (بعد)</th>
+                            <th>التحسن الإجمالي</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -399,23 +452,58 @@
         <div class="container">
             <p>برنامج أفق - متابعة تطور الطلاب &copy; 2023</p>
             <p>ثانوية العلا - الهيئة الملكية بالجبيل</p>
+            <p>صاحب المبادرة: عبدالله محمد حمدي</p>
         </div>
     </footer>
 
     <script>
-        // بيانات الطلاب (نموذجية - سيتم استبدالها بالبيانات الفعلية من Firebase)
+        // بيانات الطلاب الكاملة من ملف Excel
         const studentsData = [
-            { id: 1, studentId: "1149464800", name: "أسامة بن أبراهيم بن سعد الدوسري", preScore: 40, postScore: 40, improvement: 0 },
-            { id: 2, studentId: "1151333208", name: "الباسل بن قهد بن جسم الشمري", preScore: 32.75, postScore: 38, improvement: 16.0 },
-            { id: 3, studentId: "1149005066", name: "الوليد بن خالد بن سوئم الروضى الرشيدي", preScore: 29.75, postScore: 36, improvement: 21.0 },
-            { id: 4, studentId: "1152356471", name: "باسل بن يحيى بن علي الزهراني", preScore: 26, postScore: 33, improvement: 26.9 },
-            { id: 5, studentId: "1153935521", name: "برزان بن نايف بن دعسان الشمري", preScore: 22.75, postScore: 31, improvement: 36.3 },
-            { id: 6, studentId: "1153351638", name: "تركي بن محمد بن عوض آل جميوع", preScore: 21.25, postScore: 39, improvement: 83.5 },
-            { id: 7, studentId: "1152626451", name: "حمد بن سعد بن عبدالله الخادي", preScore: 34.75, postScore: 32, improvement: -7.9 },
-            { id: 8, studentId: "1150779252", name: "خالد بن وليد بن محمد الزهراني", preScore: 24.5, postScore: 36, improvement: 46.9 },
-            { id: 9, studentId: "1150352795", name: "رمان بن جيز بن نواف البيضاني الحربي", preScore: 31, postScore: 35, improvement: 12.9 },
-            { id: 10, studentId: "1154277667", name: "رمان بن ناصر بن شويل الأحمر", preScore: 30, postScore: 36, improvement: 20.0 }
+            { id: 1, name: "أسامة بن ابراھيم بن سعد الدوسري", preHomework: 8.75, preInteraction: 8, prePlickers: 6, preExam: 8, postHomework: 10, postInteraction: 10, postPlickers: 8, postExam: 12 },
+            { id: 2, name: "الباسل بن فھد بن جسام الشمري", preHomework: 3.75, preInteraction: 8, prePlickers: 8, preExam: 6.5, postHomework: 6, postInteraction: 10, postPlickers: 10, postExam: 11 },
+            { id: 3, name: "الوليد بن خالد بن سويلم الرويضي الرشيدي", preHomework: 5, preInteraction: 2, prePlickers: 9, preExam: 3, postHomework: 7, postInteraction: 6, postPlickers: 10, postExam: 7 },
+            { id: 4, name: "باسل بن يحيى بن علي الزھراني", preHomework: 3.75, preInteraction: 2, prePlickers: 7, preExam: 10.5, postHomework: 6, postInteraction: 6, postPlickers: 9, postExam: 15 },
+            { id: 5, name: "برزان بن نايف بن دعسان الشمري", preHomework: 1.25, preInteraction: 2, prePlickers: 8, preExam: 4.5, postHomework: 5, postInteraction: 6, postPlickers: 10, postExam: 9 },
+            { id: 6, name: "تركي بن محمد بن عوض ال جميح", preHomework: 8.75, preInteraction: 7, prePlickers: 9, preExam: 11, postHomework: 10, postInteraction: 9, postPlickers: 10, postExam: 15 },
+            { id: 7, name: "حمد بن سعد بن عبد' الخالدي", preHomework: 7.5, preInteraction: 2, prePlickers: 5, preExam: 7.5, postHomework: 9, postInteraction: 6, postPlickers: 7, postExam: 11 },
+            { id: 8, name: "خالد بن وليد بن محمد الزھراني", preHomework: 10, preInteraction: 3, prePlickers: 8, preExam: 6, postHomework: 10, postInteraction: 6, postPlickers: 10, postExam: 10 },
+            { id: 9, name: "ريان بن جھز بن نواف البيضاني الحربي", preHomework: 10, preInteraction: 3, prePlickers: 7, preExam: 5.5, postHomework: 10, postInteraction: 6, postPlickers: 9, postExam: 10 },
+            { id: 10, name: "ريان بن ناصر بن شويل ا(حمري", preHomework: 8.75, preInteraction: 3, prePlickers: 9, preExam: 10.5, postHomework: 10, postInteraction: 6, postPlickers: 10, postExam: 14 },
+            { id: 11, name: "سليمان بن عبد' بن علي اليامي", preHomework: 7.5, preInteraction: 3, prePlickers: 8, preExam: 7, postHomework: 9, postInteraction: 6, postPlickers: 10, postExam: 11 },
+            { id: 12, name: "صالح بن احمد بن صالح المزيد", preHomework: 10, preInteraction: 5, prePlickers: 8, preExam: 10, postHomework: 10, postInteraction: 8, postPlickers: 10, postExam: 14 },
+            { id: 13, name: "ضاري بن صالح بن معزي العباس", preHomework: 6.25, preInteraction: 10, prePlickers: 10, preExam: 12, postHomework: 10, postInteraction: 10, postPlickers: 10, postExam: 15 },
+            { id: 14, name: "ضاوي بن خالد بن صالح الخالدي", preHomework: 10, preInteraction: 2, prePlickers: 4, preExam: 5, postHomework: 10, postInteraction: 6, postPlickers: 6, postExam: 9 },
+            { id: 15, name: "طلال بن حمد بن محمد القرفي الھاجري", preHomework: 2.5, preInteraction: 2, prePlickers: 10, preExam: 7.5, postHomework: 5, postInteraction: 6, postPlickers: 10, postExam: 11 },
+            { id: 16, name: "طلال بن نايف بن فلاح رويضي الرشيدي", preHomework: 7.5, preInteraction: 2, prePlickers: 6, preExam: 5, postHomework: 10, postInteraction: 6, postPlickers: 8, postExam: 9 },
+            { id: 17, name: "عبدالرحمن بن مبارك بن خالد المستحي", preHomework: 5, preInteraction: 8, prePlickers: 9, preExam: 7.5, postHomework: 7, postInteraction: 10, postPlickers: 10, postExam: 12 },
+            { id: 18, name: "عبدالعزيز بن جابر بن حمد المرى", preHomework: 3.75, preInteraction: 5, prePlickers: 8, preExam: 7.5, postHomework: 6, postInteraction: 7, postPlickers: 10, postExam: 12 },
+            { id: 19, name: "عبدالعزيز بن علي بن عبد' العماري", preHomework: 10, preInteraction: 3, prePlickers: 9, preExam: 2, postHomework: 10, postInteraction: 6, postPlickers: 10, postExam: 6 },
+            { id: 20, name: "عبدالعزيز بن مقبل بن نقاء السالمي الحربي", preHomework: 7.5, preInteraction: 8, prePlickers: 8, preExam: 7.5, postHomework: 9, postInteraction: 10, postPlickers: 10, postExam: 11 },
+            { id: 21, name: "عبدالعزيز بن ھايل بن عويضه العنزي", preHomework: 8.75, preInteraction: 3, prePlickers: 10, preExam: 9, postHomework: 10, postInteraction: 6, postPlickers: 10, postExam: 13 },
+            { id: 22, name: "عصام بن احمد بن عصام مكي", preHomework: 6.25, preInteraction: 3, prePlickers: 7, preExam: 5.5, postHomework: 9, postInteraction: 6, postPlickers: 9, postExam: 9 },
+            { id: 23, name: "علي بن عبد' بن علي الحارثي", preHomework: 6.25, preInteraction: 8, prePlickers: 10, preExam: 10, postHomework: 9, postInteraction: 10, postPlickers: 10, postExam: 14 },
+            { id: 24, name: "علي بن عبدالمجيد بن علي الشھري", preHomework: 2.5, preInteraction: 5, prePlickers: 9, preExam: 9, postHomework: 5, postInteraction: 8, postPlickers: 10, postExam: 13 },
+            { id: 25, name: "فارس بن ھشام بن أحمد حكمي", preHomework: 8.75, preInteraction: 4, prePlickers: 8, preExam: 7.5, postHomework: 10, postInteraction: 7, postPlickers: 10, postExam: 11 },
+            { id: 26, name: "فھد بن محمد بن فھد القحطاني", preHomework: 10, preInteraction: 4, prePlickers: 7, preExam: 6, postHomework: 10, postInteraction: 7, postPlickers: 9, postExam: 10 },
+            { id: 27, name: "ماجد بن سالم بن عبد' الحقباني الدوسري", preHomework: 6.25, preInteraction: 3, prePlickers: 5, preExam: 3, postHomework: 9, postInteraction: 6, postPlickers: 7, postExam: 7 },
+            { id: 28, name: "مثنى بن عبدالرحمن بن عياد الشمري", preHomework: 8.75, preInteraction: 4, prePlickers: 8, preExam: 9, postHomework: 10, postInteraction: 7, postPlickers: 10, postExam: 13 },
+            { id: 29, name: "محمد بن اسماعيل بن سالم القحطاني", preHomework: 3.75, preInteraction: 5, prePlickers: 9, preExam: 10, postHomework: 6, postInteraction: 8, postPlickers: 10, postExam: 14 },
+            { id: 30, name: "محمد بن حزام بن عبود العجمي", preHomework: 6.25, preInteraction: 5, prePlickers: 6, preExam: 4, postHomework: 8, postInteraction: 8, postPlickers: 8, postExam: 8 },
+            { id: 31, name: "محمد بن فھد بن محمد القحطاني", preHomework: 1.25, preInteraction: 10, prePlickers: 9, preExam: 7, postHomework: 5, postInteraction: 10, postPlickers: 10, postExam: 11 },
+            { id: 32, name: "مسلم بن ابراھيم بن مسلم الرويشد", preHomework: 8.75, preInteraction: 7, prePlickers: 10, preExam: 5.5, postHomework: 10, postInteraction: 10, postPlickers: 10, postExam: 10 },
+            { id: 33, name: "مشعل بن فراج بن لوفان الشمري", preHomework: 5, preInteraction: 5, prePlickers: 4, preExam: 2, postHomework: 7, postInteraction: 7, postPlickers: 6, postExam: 6 },
+            { id: 34, name: "منيف بن خالد بن منيف الشھراني", preHomework: 3.75, preInteraction: 5, prePlickers: 5, preExam: 4.5, postHomework: 6, postInteraction: 7, postPlickers: 7, postExam: 9 },
+            { id: 35, name: "ناصر بن متعب بن ناصر العتيبي", preHomework: 5, preInteraction: 4, prePlickers: 9, preExam: 11.5, postHomework: 7, postInteraction: 7, postPlickers: 10, postExam: 14 },
+            { id: 36, name: "ھتان بن طارق بن رافع آل رافع الغامدي", preHomework: 6.25, preInteraction: 5, prePlickers: 9, preExam: 7.5, postHomework: 8, postInteraction: 8, postPlickers: 10, postExam: 11 },
+            { id: 37, name: "ياسر بن ماجد بن مسفر الغامدي", preHomework: 6.25, preInteraction: 7, prePlickers: 10, preExam: 7, postHomework: 8, postInteraction: 9, postPlickers: 10, postExam: 11 }
         ];
+
+        // حساب الدرجات الإجمالية والتحسن
+        studentsData.forEach(student => {
+            student.preTotal = student.preHomework + student.preInteraction + student.prePlickers + student.preExam;
+            student.postTotal = student.postHomework + student.postInteraction + student.postPlickers + student.postExam;
+            student.improvement = ((student.postTotal - student.preTotal) / student.preTotal * 100).toFixed(1);
+        });
 
         // تصنيف الطلاب حسب مستوى التحسن
         function getImprovementCategory(improvement) {
@@ -431,17 +519,22 @@
             tableBody.innerHTML = '';
             
             studentsData.forEach(student => {
-                const improvementInfo = getImprovementCategory(student.improvement);
+                const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${student.studentId}</td>
+                    <td>${student.id}</td>
                     <td>${student.name}</td>
-                    <td>${student.preScore}</td>
-                    <td>${student.postScore}</td>
+                    <td>${student.preHomework}</td>
+                    <td>${student.preInteraction}</td>
+                    <td>${student.prePlickers}</td>
+                    <td>${student.preExam}</td>
+                    <td>${student.postHomework}</td>
+                    <td>${student.postInteraction}</td>
+                    <td>${student.postPlickers}</td>
+                    <td>${student.postExam}</td>
                     <td class="${improvementInfo.class}">${improvementInfo.category} (${student.improvement}%)</td>
                     <td>
                         <button class="btn" onclick="viewStudentDetails(${student.id})">عرض</button>
-                        <button class="btn btn-secondary" onclick="editStudent(${student.id})">تعديل</button>
                     </td>
                 `;
                 tableBody.appendChild(row);
@@ -455,19 +548,19 @@
             new Chart(overviewCtx, {
                 type: 'bar',
                 data: {
-                    labels: studentsData.map(s => s.name.split(' ')[0]),
+                    labels: studentsData.map(s => s.name.split(' ')[0] + ' ' + s.name.split(' ')[1]),
                     datasets: [
                         {
-                            label: 'قبل البرنامج',
-                            data: studentsData.map(s => s.preScore),
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            label: 'الإجمالي قبل البرنامج',
+                            data: studentsData.map(s => s.preTotal),
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         },
                         {
-                            label: 'بعد البرنامج',
-                            data: studentsData.map(s => s.postScore),
-                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                            label: 'الإجمالي بعد البرنامج',
+                            data: studentsData.map(s => s.postTotal),
+                            backgroundColor: 'rgba(75, 192, 192, 0.7)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 1
                         }
@@ -479,7 +572,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 40
+                            max: 50
                         }
                     }
                 }
@@ -490,10 +583,10 @@
             
             // تجميع الطلاب حسب فئة التحسن
             const categories = {
-                "تحسن كبير": studentsData.filter(s => s.improvement >= 20).length,
-                "تحسن متوسط": studentsData.filter(s => s.improvement >= 10 && s.improvement < 20).length,
-                "تحسن محدود": studentsData.filter(s => s.improvement > 0 && s.improvement < 10).length,
-                "لم يتحسن": studentsData.filter(s => s.improvement <= 0).length
+                "تحسن كبير": studentsData.filter(s => parseFloat(s.improvement) >= 20).length,
+                "تحسن متوسط": studentsData.filter(s => parseFloat(s.improvement) >= 10 && parseFloat(s.improvement) < 20).length,
+                "تحسن محدود": studentsData.filter(s => parseFloat(s.improvement) > 0 && parseFloat(s.improvement) < 10).length,
+                "لم يتحسن": studentsData.filter(s => parseFloat(s.improvement) <= 0).length
             };
             
             new Chart(improvementCtx, {
@@ -522,21 +615,23 @@
             new Chart(comparisonCtx, {
                 type: 'line',
                 data: {
-                    labels: studentsData.map(s => s.name.split(' ')[0]),
+                    labels: studentsData.map(s => s.name.split(' ')[0] + ' ' + s.name.split(' ')[1]),
                     datasets: [
                         {
-                            label: 'قبل البرنامج',
-                            data: studentsData.map(s => s.preScore),
+                            label: 'الإجمالي قبل البرنامج',
+                            data: studentsData.map(s => s.preTotal),
                             borderColor: 'rgba(54, 162, 235, 1)',
                             backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                            tension: 0.3
+                            tension: 0.3,
+                            fill: false
                         },
                         {
-                            label: 'بعد البرنامج',
-                            data: studentsData.map(s => s.postScore),
+                            label: 'الإجمالي بعد البرنامج',
+                            data: studentsData.map(s => s.postTotal),
                             borderColor: 'rgba(75, 192, 192, 1)',
                             backgroundColor: 'rgba(75, 192, 192, 0.1)',
-                            tension: 0.3
+                            tension: 0.3,
+                            fill: false
                         }
                     ]
                 },
@@ -546,7 +641,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 40
+                            max: 50
                         }
                     }
                 }
@@ -579,11 +674,11 @@
 
         // وظائف إضافية
         function viewStudentDetails(studentId) {
-            alert(`عرض تفاصيل الطالب برقم ${studentId}`);
-        }
-
-        function editStudent(studentId) {
-            alert(`تعديل بيانات الطالب برقم ${studentId}`);
+            const student = studentsData.find(s => s.id === studentId);
+            if (student) {
+                const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
+                alert(`تفاصيل الطالب:\n\nالاسم: ${student.name}\n\nالدرجات قبل البرنامج:\n- الواجبات: ${student.preHomework}\n- التفاعل الصفي: ${student.preInteraction}\n- بليكرز: ${student.prePlickers}\n- الاختبار: ${student.preExam}\n- الإجمالي: ${student.preTotal}\n\nالدرجات بعد البرنامج:\n- الواجبات: ${student.postHomework}\n- التفاعل الصفي: ${student.postInteraction}\n- بليكرز: ${student.postPlickers}\n- الاختبار: ${student.postExam}\n- الإجمالي: ${student.postTotal}\n\nنسبة التحسن: ${student.improvement}%\nالتصنيف: ${improvementInfo.category}`);
+            }
         }
 
         // تهيئة التطبيق
@@ -608,20 +703,6 @@
                 alert('جاري تصدير التقرير إلى Excel');
             });
         });
-
-        // تكوين Firebase (يجب استبدال بالإعدادات الفعلية)
-        const firebaseConfig = {
-            apiKey: "your-api-key",
-            authDomain: "your-project.firebaseapp.com",
-            projectId: "your-project-id",
-            storageBucket: "your-project.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "your-app-id"
-        };
-
-        // تهيئة Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
     </script>
 </body>
 </html>
