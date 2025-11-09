@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>برنامج أفق - متابعة تطور الطلاب</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #2c5aa0;
@@ -38,7 +39,7 @@
         header {
             background: linear-gradient(135deg, var(--primary-color), #1e3a6f);
             color: white;
-            padding: 20px 0;
+            padding: 15px 0;
             box-shadow: var(--shadow);
         }
         
@@ -47,6 +48,22 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .rc-logo {
+            height: 60px;
+            width: auto;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
         }
         
         .logo {
@@ -228,6 +245,14 @@
             background: #e68900;
         }
         
+        .btn-print {
+            background: #6c757d;
+        }
+        
+        .btn-print:hover {
+            background: #5a6268;
+        }
+        
         .form-group {
             margin-bottom: 15px;
         }
@@ -238,11 +263,16 @@
             font-weight: bold;
         }
         
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
         }
         
         .chart-container {
@@ -307,11 +337,85 @@
             border: 1px solid #ddd;
         }
         
+        .project-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        
+        .treatment-plan {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: var(--shadow);
+        }
+        
+        .treatment-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .treatment-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .treatment-section:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .student-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        @media print {
+            header, footer, nav, .btn, .section-title .btn {
+                display: none !important;
+            }
+            
+            .section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .treatment-plan {
+                break-inside: avoid;
+            }
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
                 text-align: center;
+            }
+            
+            .logo-section {
+                justify-content: center;
+                margin-bottom: 15px;
             }
             
             nav ul {
@@ -323,7 +427,7 @@
                 margin: 0 10px;
             }
             
-            .grid {
+            .grid, .plan-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -339,6 +443,10 @@
             table th, table td {
                 padding: 8px 5px;
             }
+            
+            .project-links {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -346,17 +454,32 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <div>
-                    <div class="logo">برنامج أفق - متابعة التطور الدراسي</div>
-                    <div class="initiative-creator">صاحب المبادرة: عبدالله محمد حمدي</div>
+                <div class="logo-section">
+                    <!-- شعار الهيئة الملكية -->
+                    <div class="rc-logo">
+                        <svg width="180" height="60" viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="180" height="60" fill="#1e3a6f" rx="5"/>
+                            <text x="90" y="35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">
+                                الهيئة الملكية للجبيل وينبع
+                            </text>
+                            <text x="90" y="50" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10">
+                                Royal Commission for Jubail & Yanbu
+                            </text>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <div class="logo">برنامج أفق - متابعة التطور الدراسي</div>
+                        <div class="initiative-creator">صاحب المبادرة: عبدالله محمد حمدي</div>
+                    </div>
                 </div>
                 <nav>
                     <ul>
                         <li><a href="#overview">نظرة عامة</a></li>
                         <li><a href="#students">الطلاب</a></li>
                         <li><a href="#comparison">المقارنات</a></li>
+                        <li><a href="#project-example">مشاريع الطلاب</a></li>
+                        <li><a href="#treatment-plans">الخطط العلاجية</a></li>
                         <li><a href="#reports">التقارير</a></li>
-                        <li><a href="#project-example">مثال المشروع</a></li>
                     </ul>
                 </nav>
             </div>
@@ -455,49 +578,108 @@
         </section>
 
         <section id="project-example" class="section">
-            <h2 class="section-title">مثال على تطبيق البرنامج: بنك الأسئلة التفاعلي</h2>
+            <h2 class="section-title">مشاريع الطلاب: بنوك الأسئلة التفاعلية</h2>
             
             <div class="example-project">
-                <h3>بنك الأسئلة التفاعلي في الكيمياء</h3>
-                <p>هذا المشروع هو نتاج تطبيق برنامج "أفق" حيث قام الطلاب بتصميم وإعداد بنك أسئلة تفاعلي في مادة الكيمياء باستخدام تقنيات الويب.</p>
+                <h3>بنوك الأسئلة التفاعلية في الكيمياء</h3>
+                <p>هذه المشاريع هي نتاج تطبيق برنامج "أفق" حيث قام الطلاب بتصميم وإعداد بنوك أسئلة تفاعلية في مادة الكيمياء باستخدام تقنيات الويب.</p>
                 
                 <div class="project-preview">
-                    <h4>مميزات المشروع:</h4>
-                    <ul>
-                        <li>أسئلة تفاعلية متنوعة في الكيمياء</li>
-                        <li>تصميم جذاب وسهل الاستخدام</li>
-                        <li>إمكانية اختيار الإجابات والتحقق منها</li>
-                        <li>تغطية لمختلف وحدات منهج الكيمياء</li>
-                        <li>تم تطويره باستخدام HTML, CSS, JavaScript</li>
-                    </ul>
+                    <h4>مشروع الطالب الأول: بنك أسئلة تفاعلي شامل</h4>
+                    <p>بنك أسئلة شامل يغطي مختلف وحدات منهج الكيمياء للصف الأول الثانوي، مع تصميم تفاعلي جذاب.</p>
                     
-                    <div style="text-align: center; margin: 20px 0;">
-                        <a href="https://rrivv3216.github.io/-4/" target="_blank" class="btn btn-accent" style="font-size: 1.1rem; padding: 12px 25px;">
-                            تجربة بنك الأسئلة التفاعلي
+                    <div class="project-links">
+                        <a href="https://m7md-09.github.io/-/" target="_blank" class="btn btn-accent">
+                            <i class="fas fa-external-link-alt"></i> تجربة المشروع الأول
                         </a>
-                    </div>
-                    
-                    <div style="text-align: center;">
-                        <div class="project-screenshot">
-                            <!-- صورة توضيحية - يمكن استبدالها بلقطة حقيقية للمشروع -->
-                            <div style="background: linear-gradient(135deg, #2c5aa0, #4caf50); height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
-                                معاينة بنك الأسئلة التفاعلي
-                            </div>
-                        </div>
-                        <p style="color: #666; font-style: italic;">انقر على الزر أعلاه لمعاينة المشروع مباشرة</p>
                     </div>
                 </div>
                 
                 <div class="project-preview">
-                    <h4>كيف ساهم المشروع في رفع التحصيل الدراسي؟</h4>
-                    <p>من خلال إشراك الطلاب في عملية إنشاء بنك الأسئلة التفاعلي، تم تحقيق الأهداف التالية:</p>
+                    <h4>مشروع الطالب الثاني: تطبيق اختبارات تفاعلي</h4>
+                    <p>تطبيق متقدم يحتوي على اختبارات تفاعلية مع تصحيح فوري وتقارير أداء.</p>
+                    
+                    <div class="project-links">
+                        <a href="https://rrivv3216.github.io/-4/" target="_blank" class="btn btn-accent">
+                            <i class="fas fa-external-link-alt"></i> تجربة المشروع الثاني
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="project-preview">
+                    <h4>كيف ساهمت هذه المشاريع في رفع التحصيل الدراسي؟</h4>
                     <ul>
                         <li>تعميق فهم الطلاب للمفاهيم الكيميائية من خلال صياغة الأسئلة</li>
                         <li>تنمية مهارات العمل الجماعي والتعاون بين الطلاب</li>
                         <li>تحسين المهارات الرقمية والتقنية لدى الطلاب</li>
                         <li>زيادة دافعية الطلاب للتعلم والمشاركة</li>
-                        <li>توفير مورد تعليمي تفاعلي يمكن للجميع الاستفادة منه</li>
+                        <li>توفير موارد تعليمية تفاعلية يمكن للجميع الاستفادة منها</li>
                     </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="treatment-plans" class="section">
+            <h2 class="section-title">الخطط العلاجية للطلاب</h2>
+            
+            <div class="student-selector">
+                <select id="studentSelect" class="form-control">
+                    <option value="">اختر طالباً لعرض خطته العلاجية</option>
+                    <!-- سيتم ملؤها بالطلاب -->
+                </select>
+                <button class="btn" id="generatePlan">إنشاء خطة علاجية</button>
+                <button class="btn btn-print" onclick="window.print()"><i class="fas fa-print"></i> طباعة الخطط</button>
+            </div>
+            
+            <div class="plan-grid" id="plansContainer">
+                <!-- سيتم إضافة الخطط العلاجية هنا -->
+            </div>
+            
+            <div class="treatment-plan">
+                <div class="treatment-header">
+                    <h3>الخطة العلاجية الجماعية</h3>
+                </div>
+                
+                <div class="treatment-section">
+                    <h4>أولاً: الطلاب ذوو التحسن المحدود (أقل من 10%)</h4>
+                    <p><strong>الاستراتيجيات المقترحة:</strong></p>
+                    <ul>
+                        <li>جلسات علاجية أسبوعية مكثفة تركز على المفاهيم الأساسية</li>
+                        <li>توفير موارد إضافية ومراجعات مصغرة للمواضيع الصعبة</li>
+                        <li>تعزيز مهارات التعلم الذاتي وتنظيم الوقت</li>
+                        <li>متابعة فردية أسبوعية من المعلم لتقييم التقدم</li>
+                    </ul>
+                </div>
+                
+                <div class="treatment-section">
+                    <h4>ثانياً: الطلاب ذوو التحسن المتوسط (10% - 20%)</h4>
+                    <p><strong>الاستراتيجيات المقترحة:</strong></p>
+                    <ul>
+                        <li>تشجيع العمل الجماعي مع أقران متفوقين</li>
+                        <li>تطوير مهارات حل المسائل والتطبيقات العملية</li>
+                        <li>تعزيز الثقة بالنفس من خلال تكليفهم بمهام قيادية في المجموعات</li>
+                        <li>توفير تحديات إضافية لتحفيز التفكير النقدي</li>
+                    </ul>
+                </div>
+                
+                <div class="treatment-section">
+                    <h4>ثالثاً: الطلاب ذوو التحسن الكبير (أكثر من 20%)</h4>
+                    <p><strong>الاستراتيجيات المقترحة:</strong></p>
+                    <ul>
+                        <li>تكليفهم بدور المساعدين في المجموعات التعليمية</li>
+                        <li>توفير مشاريع إثرائية تتحدى قدراتهم</li>
+                        <li>تشجيعهم على المشاركة في مسابقات وأنشطة إبداعية</li>
+                        <li>تطوير مهارات القيادة والتعليم الذاتي</li>
+                    </ul>
+                </div>
+                
+                <div class="plan-actions">
+                    <button class="btn btn-secondary" onclick="downloadPlan('الخطة العلاجية الجماعية')">
+                        <i class="fas fa-download"></i> تحميل الخطة
+                    </button>
+                    <button class="btn btn-print" onclick="window.print()">
+                        <i class="fas fa-print"></i> طباعة الخطة
+                    </button>
                 </div>
             </div>
         </section>
@@ -589,10 +771,10 @@
 
         // تصنيف الطلاب حسب مستوى التحسن
         function getImprovementCategory(improvement) {
-            if (improvement >= 20) return { category: "تحسن كبير", class: "improvement-good" };
-            if (improvement >= 10) return { category: "تحسن متوسط", class: "improvement-medium" };
-            if (improvement > 0) return { category: "تحسن محدود", class: "improvement-low" };
-            return { category: "لم يتحسن", class: "improvement-low" };
+            if (improvement >= 20) return { category: "تحسن كبير", class: "improvement-good", level: "high" };
+            if (improvement >= 10) return { category: "تحسن متوسط", class: "improvement-medium", level: "medium" };
+            if (improvement > 0) return { category: "تحسن محدود", class: "improvement-low", level: "low" };
+            return { category: "لم يتحسن", class: "improvement-low", level: "none" };
         }
 
         // ملء جدول الطلاب
@@ -617,10 +799,141 @@
                     <td class="${improvementInfo.class}">${improvementInfo.category} (${student.improvement}%)</td>
                     <td>
                         <button class="btn" onclick="viewStudentDetails(${student.id})">عرض</button>
+                        <button class="btn btn-secondary" onclick="generateTreatmentPlan(${student.id})">خطة علاجية</button>
                     </td>
                 `;
                 tableBody.appendChild(row);
             });
+        }
+
+        // ملء قائمة اختيار الطلاب
+        function populateStudentSelect() {
+            const studentSelect = document.getElementById('studentSelect');
+            studentSelect.innerHTML = '<option value="">اختر طالباً لعرض خطته العلاجية</option>';
+            
+            studentsData.forEach(student => {
+                const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} - ${improvementInfo.category}`;
+                studentSelect.appendChild(option);
+            });
+        }
+
+        // إنشاء الخطط العلاجية
+        function generateTreatmentPlan(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            if (!student) return;
+            
+            const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
+            const plansContainer = document.getElementById('plansContainer');
+            
+            // إزالة الخطة الحالية للطالب إذا كانت موجودة
+            const existingPlan = document.getElementById(`plan-${studentId}`);
+            if (existingPlan) {
+                existingPlan.remove();
+            }
+            
+            const plan = document.createElement('div');
+            plan.className = 'treatment-plan';
+            plan.id = `plan-${studentId}`;
+            
+            // تحديد الاستراتيجيات بناءً على مستوى التحسن
+            let strategies = [];
+            if (improvementInfo.level === 'high') {
+                strategies = [
+                    "تكليف الطالب بدور المساعد في المجموعات التعليمية",
+                    "توفير مشاريع إثرائية تتحدى قدراته",
+                    "تشجيعه على المشاركة في مسابقات وأنشطة إبداعية",
+                    "تطوير مهارات القيادة والتعليم الذاتي"
+                ];
+            } else if (improvementInfo.level === 'medium') {
+                strategies = [
+                    "تشجيع العمل الجماعي مع أقران متفوقين",
+                    "تطوير مهارات حل المسائل والتطبيقات العملية",
+                    "تعزيز الثقة بالنفس من خلال تكليفه بمهام قيادية",
+                    "توفير تحديات إضافية لتحفيز التفكير النقدي"
+                ];
+            } else {
+                strategies = [
+                    "جلسات علاجية أسبوعية مكثفة تركز على المفاهيم الأساسية",
+                    "توفير موارد إضافية ومراجعات مصغرة للمواضيع الصعبة",
+                    "تعزيز مهارات التعلم الذاتي وتنظيم الوقت",
+                    "متابعة فردية أسبوعية من المعلم لتقييم التقدم"
+                ];
+            }
+            
+            plan.innerHTML = `
+                <div class="treatment-header">
+                    <h3>الخطة العلاجية للطالب: ${student.name}</h3>
+                </div>
+                
+                <div class="treatment-section">
+                    <h4>معلومات الطالب</h4>
+                    <p><strong>الدرجة الإجمالية قبل البرنامج:</strong> ${student.preTotal}</p>
+                    <p><strong>الدرجة الإجمالية بعد البرنامج:</strong> ${student.postTotal}</p>
+                    <p><strong>نسبة التحسن:</strong> <span class="${improvementInfo.class}">${student.improvement}%</span></p>
+                    <p><strong>التصنيف:</strong> ${improvementInfo.category}</p>
+                </div>
+                
+                <div class="treatment-section">
+                    <h4>الاستراتيجيات العلاجية المقترحة</h4>
+                    <ul>
+                        ${strategies.map(strategy => `<li>${strategy}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="treatment-section">
+                    <h4>مؤشرات التقدم المتوقعة</h4>
+                    <ul>
+                        <li>تحسن في الدرجات بمعدل 5-10% خلال الشهر القادم</li>
+                        <li>زيادة المشاركة الصفية والتفاعل مع الأنشطة</li>
+                        <li>تحسن في مهارات حل المسائل والتطبيقات العملية</li>
+                        <li>زيادة الثقة بالنفس والدافعية للتعلم</li>
+                    </ul>
+                </div>
+                
+                <div class="treatment-section">
+                    <h4>متابعة وتقييم</h4>
+                    <p><strong>مواعيد المتابعة:</strong> أسبوعياً كل يوم أحد</p>
+                    <p><strong>مسؤول المتابعة:</strong> معلم المادة + المرشد الطلابي</p>
+                    <p><strong>أدوات التقييم:</strong> اختبارات قصيرة - ملاحظة المشاركة - تقييم الأنشطة</p>
+                </div>
+                
+                <div class="plan-actions">
+                    <button class="btn btn-secondary" onclick="downloadPlan('${student.name}')">
+                        <i class="fas fa-download"></i> تحميل الخطة
+                    </button>
+                    <button class="btn" onclick="editPlan(${studentId})">
+                        <i class="fas fa-edit"></i> تعديل الخطة
+                    </button>
+                    <button class="btn btn-print" onclick="window.print()">
+                        <i class="fas fa-print"></i> طباعة الخطة
+                    </button>
+                </div>
+            `;
+            
+            plansContainer.appendChild(plan);
+            plansContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // وظائف مساعدة
+        function downloadPlan(studentName) {
+            alert(`جارٍ تحميل الخطة العلاجية للطالب: ${studentName}`);
+            // في التطبيق الحقيقي، هنا سيتم إنشاء ملف PDF للخطة
+        }
+
+        function editPlan(studentId) {
+            alert(`فتح نافذة تعديل الخطة للطالب رقم: ${studentId}`);
+            // في التطبيق الحقيقي، هنا ستفتح نافذة لتعديل الخطة
+        }
+
+        function viewStudentDetails(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            if (student) {
+                const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
+                alert(`تفاصيل الطالب:\n\nالاسم: ${student.name}\n\nالدرجات قبل البرنامج:\n- الواجبات: ${student.preHomework}\n- التفاعل الصفي: ${student.preInteraction}\n- بليكرز: ${student.prePlickers}\n- الاختبار: ${student.preExam}\n- الإجمالي: ${student.preTotal}\n\nالدرجات بعد البرنامج:\n- الواجبات: ${student.postHomework}\n- التفاعل الصفي: ${student.postInteraction}\n- بليكرز: ${student.postPlickers}\n- الاختبار: ${student.postExam}\n- الإجمالي: ${student.postTotal}\n\nنسبة التحسن: ${student.improvement}%\nالتصنيف: ${improvementInfo.category}`);
+            }
         }
 
         // إنشاء الرسوم البيانية
@@ -754,18 +1067,10 @@
             });
         }
 
-        // وظائف إضافية
-        function viewStudentDetails(studentId) {
-            const student = studentsData.find(s => s.id === studentId);
-            if (student) {
-                const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
-                alert(`تفاصيل الطالب:\n\nالاسم: ${student.name}\n\nالدرجات قبل البرنامج:\n- الواجبات: ${student.preHomework}\n- التفاعل الصفي: ${student.preInteraction}\n- بليكرز: ${student.prePlickers}\n- الاختبار: ${student.preExam}\n- الإجمالي: ${student.preTotal}\n\nالدرجات بعد البرنامج:\n- الواجبات: ${student.postHomework}\n- التفاعل الصفي: ${student.postInteraction}\n- بليكرز: ${student.postPlickers}\n- الاختبار: ${student.postExam}\n- الإجمالي: ${student.postTotal}\n\nنسبة التحسن: ${student.improvement}%\nالتصنيف: ${improvementInfo.category}`);
-            }
-        }
-
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
             populateStudentsTable();
+            populateStudentSelect();
             createCharts();
             
             // إضافة مستمعي الأحداث للأزرار
@@ -775,6 +1080,16 @@
             
             document.getElementById('importDataBtn').addEventListener('click', function() {
                 alert('فتح نافذة استيراد البيانات');
+            });
+            
+            document.getElementById('generatePlan').addEventListener('click', function() {
+                const studentSelect = document.getElementById('studentSelect');
+                const selectedStudentId = parseInt(studentSelect.value);
+                if (selectedStudentId) {
+                    generateTreatmentPlan(selectedStudentId);
+                } else {
+                    alert('يرجى اختيار طالب أولاً');
+                }
             });
             
             document.getElementById('exportPdfBtn').addEventListener('click', function() {
