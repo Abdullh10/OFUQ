@@ -220,6 +220,14 @@
             background: #3d8b40;
         }
         
+        .btn-accent {
+            background: var(--accent-color);
+        }
+        
+        .btn-accent:hover {
+            background: #e68900;
+        }
+        
         .form-group {
             margin-bottom: 15px;
         }
@@ -274,6 +282,31 @@
             overflow-y: auto;
         }
         
+        .example-project {
+            border: 2px dashed var(--primary-color);
+            background: #f8fbff;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .project-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: var(--shadow);
+        }
+        
+        .project-screenshot {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 15px 0;
+            border: 1px solid #ddd;
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
@@ -323,6 +356,7 @@
                         <li><a href="#students">الطلاب</a></li>
                         <li><a href="#comparison">المقارنات</a></li>
                         <li><a href="#reports">التقارير</a></li>
+                        <li><a href="#project-example">مثال المشروع</a></li>
                     </ul>
                 </nav>
             </div>
@@ -417,6 +451,54 @@
             
             <div class="chart-container">
                 <canvas id="comparisonChart"></canvas>
+            </div>
+        </section>
+
+        <section id="project-example" class="section">
+            <h2 class="section-title">مثال على تطبيق البرنامج: بنك الأسئلة التفاعلي</h2>
+            
+            <div class="example-project">
+                <h3>بنك الأسئلة التفاعلي في الكيمياء</h3>
+                <p>هذا المشروع هو نتاج تطبيق برنامج "أفق" حيث قام الطلاب بتصميم وإعداد بنك أسئلة تفاعلي في مادة الكيمياء باستخدام تقنيات الويب.</p>
+                
+                <div class="project-preview">
+                    <h4>مميزات المشروع:</h4>
+                    <ul>
+                        <li>أسئلة تفاعلية متنوعة في الكيمياء</li>
+                        <li>تصميم جذاب وسهل الاستخدام</li>
+                        <li>إمكانية اختيار الإجابات والتحقق منها</li>
+                        <li>تغطية لمختلف وحدات منهج الكيمياء</li>
+                        <li>تم تطويره باستخدام HTML, CSS, JavaScript</li>
+                    </ul>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a href="https://m7md-09.github.io/-/" target="_blank" class="btn btn-accent" style="font-size: 1.1rem; padding: 12px 25px;">
+                            تجربة بنك الأسئلة التفاعلي
+                        </a>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <div class="project-screenshot">
+                            <!-- صورة توضيحية - يمكن استبدالها بلقطة حقيقية للمشروع -->
+                            <div style="background: linear-gradient(135deg, #2c5aa0, #4caf50); height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                                معاينة بنك الأسئلة التفاعلي
+                            </div>
+                        </div>
+                        <p style="color: #666; font-style: italic;">انقر على الزر أعلاه لمعاينة المشروع مباشرة</p>
+                    </div>
+                </div>
+                
+                <div class="project-preview">
+                    <h4>كيف ساهم المشروع في رفع التحصيل الدراسي؟</h4>
+                    <p>من خلال إشراك الطلاب في عملية إنشاء بنك الأسئلة التفاعلي، تم تحقيق الأهداف التالية:</p>
+                    <ul>
+                        <li>تعميق فهم الطلاب للمفاهيم الكيميائية من خلال صياغة الأسئلة</li>
+                        <li>تنمية مهارات العمل الجماعي والتعاون بين الطلاب</li>
+                        <li>تحسين المهارات الرقمية والتقنية لدى الطلاب</li>
+                        <li>زيادة دافعية الطلاب للتعلم والمشاركة</li>
+                        <li>توفير مورد تعليمي تفاعلي يمكن للجميع الاستفادة منه</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
