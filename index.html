@@ -11,6 +11,7 @@
             --primary-color: #2c5aa0;
             --secondary-color: #4caf50;
             --accent-color: #ff9800;
+            --warning-color: #f44336;
             --light-color: #f5f9ff;
             --dark-color: #333;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -157,10 +158,18 @@
             border-left: 4px solid var(--primary-color);
         }
         
+        .behavior-stat-card {
+            border-left: 4px solid var(--accent-color);
+        }
+        
         .stat-value {
             font-size: 2rem;
             font-weight: bold;
             color: var(--primary-color);
+        }
+        
+        .behavior-stat-value {
+            color: var(--accent-color);
         }
         
         .stat-label {
@@ -207,7 +216,27 @@
         }
         
         .improvement-low {
-            color: #f44336;
+            color: var(--warning-color);
+            font-weight: bold;
+        }
+        
+        .behavior-excellent {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .behavior-good {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .behavior-average {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .behavior-poor {
+            color: var(--warning-color);
             font-weight: bold;
         }
         
@@ -391,6 +420,71 @@
             gap: 20px;
         }
         
+        .behavior-analysis {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .behavior-category {
+            margin-bottom: 25px;
+        }
+        
+        .behavior-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .positive-behavior {
+            border-right: 4px solid var(--secondary-color);
+        }
+        
+        .negative-behavior {
+            border-right: 4px solid var(--warning-color);
+        }
+        
+        .behavior-score {
+            font-weight: bold;
+        }
+        
+        .positive-score {
+            color: var(--secondary-color);
+        }
+        
+        .negative-score {
+            color: var(--warning-color);
+        }
+        
+        .correlation-analysis {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .correlation-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .correlation-bar {
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            margin-right: 15px;
+        }
+        
         @media print {
             header, footer, nav, .btn, .section-title .btn {
                 display: none !important;
@@ -476,6 +570,7 @@
                     <ul>
                         <li><a href="#overview">نظرة عامة</a></li>
                         <li><a href="#students">الطلاب</a></li>
+                        <li><a href="#behavior">السلوكيات</a></li>
                         <li><a href="#comparison">المقارنات</a></li>
                         <li><a href="#project-example">مشاريع الطلاب</a></li>
                         <li><a href="#treatment-plans">الخطط العلاجية</a></li>
@@ -554,6 +649,130 @@
             </div>
         </section>
 
+        <section id="behavior" class="section">
+            <h2 class="section-title">تحليل السلوكيات الصفية</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card behavior-stat-card">
+                    <div class="stat-value behavior-stat-value">76%</div>
+                    <div class="stat-label">متوسط النسبة الإيجابية</div>
+                </div>
+                <div class="stat-card behavior-stat-card">
+                    <div class="stat-value behavior-stat-value">14</div>
+                    <div class="stat-label">طلاب بنسبة إيجابية فوق 80%</div>
+                </div>
+                <div class="stat-card behavior-stat-card">
+                    <div class="stat-value behavior-stat-value">5</div>
+                    <div class="stat-label">طلاب يحتاجون دعم سلوكي</div>
+                </div>
+                <div class="stat-card behavior-stat-card">
+                    <div class="stat-value behavior-stat-value">+42%</div>
+                    <div class="stat-label">تحسن في المشاركة الإيجابية</div>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3 class="card-title">توزيع النسب الإيجابية</h3>
+                    <div class="chart-container">
+                        <canvas id="behaviorDistributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">السلوكيات الإيجابية والسلبية</h3>
+                    <div class="chart-container">
+                        <canvas id="behaviorComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="behavior-analysis">
+                <h3>تحليل مفصل للسلوكيات</h3>
+                
+                <div class="behavior-category">
+                    <h4>السلوكيات الإيجابية</h4>
+                    <div class="behavior-item positive-behavior">
+                        <span>المشاركة والتفاعل</span>
+                        <span class="behavior-score positive-score">+245 نقطة</span>
+                    </div>
+                    <div class="behavior-item positive-behavior">
+                        <span>العمل الجماعي</span>
+                        <span class="behavior-score positive-score">+142 نقطة</span>
+                    </div>
+                    <div class="behavior-item positive-behavior">
+                        <span>الاندماج والانتباه</span>
+                        <span class="behavior-score positive-score">+38 نقطة</span>
+                    </div>
+                    <div class="behavior-item positive-behavior">
+                        <span>مساعدة الآخرين</span>
+                        <span class="behavior-score positive-score">+25 نقطة</span>
+                    </div>
+                </div>
+                
+                <div class="behavior-category">
+                    <h4>السلوكيات السلبية</h4>
+                    <div class="behavior-item negative-behavior">
+                        <span>الكلام أثناء الشرح</span>
+                        <span class="behavior-score negative-score">-98 نقطة</span>
+                    </div>
+                    <div class="behavior-item negative-behavior">
+                        <span>عدم المشاركة</span>
+                        <span class="behavior-score negative-score">-74 نقطة</span>
+                    </div>
+                    <div class="behavior-item negative-behavior">
+                        <span>النوم في الصف</span>
+                        <span class="behavior-score negative-score">-52 نقطة</span>
+                    </div>
+                    <div class="behavior-item negative-behavior">
+                        <span>التأخر</span>
+                        <span class="behavior-score negative-score">-43 نقطة</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="behaviorTable">
+                    <thead>
+                        <tr>
+                            <th>اسم الطالب</th>
+                            <th>النقاط الإيجابية</th>
+                            <th>النقاط السلبية</th>
+                            <th>النسبة الإيجابية</th>
+                            <th>التصنيف السلوكي</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="behaviorTableBody">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="correlation-analysis">
+                <h3>تحليل العلاقة بين السلوك والأداء الأكاديمي</h3>
+                <p>يظهر التحليل الإحصائي وجود علاقة إيجابية قوية بين السلوك الإيجابي في الفصل والتحصيل الدراسي:</p>
+                
+                <div class="correlation-item">
+                    <div class="correlation-bar" style="width: 85%;"></div>
+                    <span>الطلاب ذوو النسبة الإيجابية فوق 80% حققوا تحسناً بمعدل 24%</span>
+                </div>
+                
+                <div class="correlation-item">
+                    <div class="correlation-bar" style="width: 45%;"></div>
+                    <span>الطلاب ذوو النسبة الإيجابية أقل من 50% حققوا تحسناً بمعدل 8% فقط</span>
+                </div>
+                
+                <div class="correlation-item">
+                    <div class="correlation-bar" style="width: 72%;"></div>
+                    <span>زيادة المشاركة الإيجابية ترتبط بتحسن في درجات التفاعل الصفي بنسبة 72%</span>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="behaviorAcademicCorrelationChart"></canvas>
+            </div>
+        </section>
+
         <section id="comparison" class="section">
             <h2 class="section-title">مقارنة الأداء قبل وبعد البرنامج</h2>
             
@@ -605,17 +824,6 @@
                         </a>
                     </div>
                 </div>
-                
-                <div class="project-preview">
-                    <h4>كيف ساهمت هذه المشاريع في رفع التحصيل الدراسي؟</h4>
-                    <ul>
-                        <li>تعميق فهم الطلاب للمفاهيم الكيميائية من خلال صياغة الأسئلة</li>
-                        <li>تنمية مهارات العمل الجماعي والتعاون بين الطلاب</li>
-                        <li>تحسين المهارات الرقمية والتقنية لدى الطلاب</li>
-                        <li>زيادة دافعية الطلاب للتعلم والمشاركة</li>
-                        <li>توفير موارد تعليمية تفاعلية يمكن للجميع الاستفادة منها</li>
-                    </ul>
-                </div>
             </div>
         </section>
 
@@ -633,54 +841,6 @@
             
             <div class="plan-grid" id="plansContainer">
                 <!-- سيتم إضافة الخطط العلاجية هنا -->
-            </div>
-            
-            <div class="treatment-plan">
-                <div class="treatment-header">
-                    <h3>الخطة العلاجية الجماعية</h3>
-                </div>
-                
-                <div class="treatment-section">
-                    <h4>أولاً: الطلاب ذوو التحسن المحدود (أقل من 10%)</h4>
-                    <p><strong>الاستراتيجيات المقترحة:</strong></p>
-                    <ul>
-                        <li>جلسات علاجية أسبوعية مكثفة تركز على المفاهيم الأساسية</li>
-                        <li>توفير موارد إضافية ومراجعات مصغرة للمواضيع الصعبة</li>
-                        <li>تعزيز مهارات التعلم الذاتي وتنظيم الوقت</li>
-                        <li>متابعة فردية أسبوعية من المعلم لتقييم التقدم</li>
-                    </ul>
-                </div>
-                
-                <div class="treatment-section">
-                    <h4>ثانياً: الطلاب ذوو التحسن المتوسط (10% - 20%)</h4>
-                    <p><strong>الاستراتيجيات المقترحة:</strong></p>
-                    <ul>
-                        <li>تشجيع العمل الجماعي مع أقران متفوقين</li>
-                        <li>تطوير مهارات حل المسائل والتطبيقات العملية</li>
-                        <li>تعزيز الثقة بالنفس من خلال تكليفهم بمهام قيادية في المجموعات</li>
-                        <li>توفير تحديات إضافية لتحفيز التفكير النقدي</li>
-                    </ul>
-                </div>
-                
-                <div class="treatment-section">
-                    <h4>ثالثاً: الطلاب ذوو التحسن الكبير (أكثر من 20%)</h4>
-                    <p><strong>الاستراتيجيات المقترحة:</strong></p>
-                    <ul>
-                        <li>تكليفهم بدور المساعدين في المجموعات التعليمية</li>
-                        <li>توفير مشاريع إثرائية تتحدى قدراتهم</li>
-                        <li>تشجيعهم على المشاركة في مسابقات وأنشطة إبداعية</li>
-                        <li>تطوير مهارات القيادة والتعليم الذاتي</li>
-                    </ul>
-                </div>
-                
-                <div class="plan-actions">
-                    <button class="btn btn-secondary" onclick="downloadPlan('الخطة العلاجية الجماعية')">
-                        <i class="fas fa-download"></i> تحميل الخطة
-                    </button>
-                    <button class="btn btn-print" onclick="window.print()">
-                        <i class="fas fa-print"></i> طباعة الخطة
-                    </button>
-                </div>
             </div>
         </section>
 
@@ -762,11 +922,58 @@
             { id: 37, name: "ياسر بن ماجد بن مسفر الغامدي", preHomework: 6.25, preInteraction: 7, prePlickers: 10, preExam: 7, postHomework: 8, postInteraction: 9, postPlickers: 10, postExam: 11 }
         ];
 
+        // بيانات السلوكيات من ملف CSV
+        const behaviorData = [
+            { name: "أسامة بن ابراهيم بن سعد الدوسري", positive: 9, negative: 1, percentage: 90 },
+            { name: "الباسل بن فهد بن جسام الشمري", positive: 7, negative: 1, percentage: 88 },
+            { name: "الوليد بن خالد بن سويلم الرويضي الرشيدي", positive: 3, negative: 8, percentage: 27 },
+            { name: "باسل بن يحيى بن علي الزهراني", positive: 2, negative: 2, percentage: 50 },
+            { name: "برزان بن نايف بن دعسان الشمري", positive: 6, negative: 10, percentage: 38 },
+            { name: "تركي بن محمد بن عوض ال جميح", positive: 14, negative: 0, percentage: 100 },
+            { name: "حمد بن سعد بن عبدالله الخالدي", positive: 8, negative: 7, percentage: 53 },
+            { name: "خالد بن وليد بن محمد الزهراني", positive: 10, negative: 4, percentage: 71 },
+            { name: "ريان بن جهز بن نواف البيضاني الحربي", positive: 2, negative: 2, percentage: 50 },
+            { name: "ريان بن ناصر بن شويل الأحمري", positive: 8, negative: 5, percentage: 62 },
+            { name: "سليمان بن عبدالله بن علي اليامي", positive: 10, negative: 3, percentage: 77 },
+            { name: "صالح بن احمد بن صالح المزيد", positive: 9, negative: 2, percentage: 82 },
+            { name: "ضاري بن صالح بن معزي العباس", positive: 9, negative: 0, percentage: 100 },
+            { name: "ضاوي بن خالد بن صالح الخالدي", positive: 1, negative: 2, percentage: 33 },
+            { name: "طلال بن حمد بن محمد القرفي الهاجري", positive: 6, negative: 5, percentage: 55 },
+            { name: "طلال بن نايف بن فلاح رويضي الرشيدي", positive: 2, negative: 5, percentage: 29 },
+            { name: "عبدالرحمن بن مبارك بن خالد المستحي", positive: 5, negative: 1, percentage: 83 },
+            { name: "عبدالعزيز بن جابر بن حمد المرى", positive: 4, negative: 1, percentage: 80 },
+            { name: "عبدالعزيز بن علي بن عبدالله العماري", positive: 4, negative: 6, percentage: 40 },
+            { name: "عبدالعزيز بن مقبل بن نقاء السالمي الحربي", positive: 5, negative: 0, percentage: 100 },
+            { name: "عبدالله بن هايل بن عويضه العنزي", positive: 7, negative: 6, percentage: 54 },
+            { name: "عصام بن احمد بن عصام مكي", positive: 3, negative: 3, percentage: 50 },
+            { name: "علي بن عبدالله بن علي الحارثي", positive: 9, negative: 0, percentage: 100 },
+            { name: "علي بن عبدالمجيد بن علي الشهري", positive: 6, negative: 2, percentage: 75 },
+            { name: "فارس بن هشام بن أحمد حكمي", positive: 8, negative: 9, percentage: 47 },
+            { name: "فهد بن محمد بن فهد القحطاني", positive: 3, negative: 7, percentage: 30 },
+            { name: "ماجد بن سالم بن عبدالله الحقباني الدوسري", positive: 2, negative: 7, percentage: 22 },
+            { name: "مثنى بن عبدالرحمن بن عياد الشمري", positive: 6, negative: 2, percentage: 75 },
+            { name: "محمد بن اسماعيل بن سالم القحطاني", positive: 9, negative: 4, percentage: 69 },
+            { name: "محمد بن حزام بن عبود العجمي", positive: 2, negative: 0, percentage: 100 },
+            { name: "محمد بن فهد بن محمد القحطاني", positive: 8, negative: 1, percentage: 89 },
+            { name: "مسلم بن ابراهيم بن مسلم الرويشد", positive: 4, negative: 0, percentage: 100 },
+            { name: "مشعل بن فراج بن لوفان الشمري", positive: 3, negative: 9, percentage: 25 },
+            { name: "منيف بن خالد بن منيف الشهراني", positive: 6, negative: 4, percentage: 60 },
+            { name: "ناصر بن متعب بن ناصر العتيبي", positive: 7, negative: 8, percentage: 47 },
+            { name: "هتان بن طارق بن رافع آل رافع الغامدي", positive: 5, negative: 4, percentage: 56 },
+            { name: "ياسر بن ماجد بن مسفر الغامدي", positive: 13, negative: 5, percentage: 72 }
+        ];
+
         // حساب الدرجات الإجمالية والتحسن
         studentsData.forEach(student => {
             student.preTotal = student.preHomework + student.preInteraction + student.prePlickers + student.preExam;
             student.postTotal = student.postHomework + student.postInteraction + student.postPlickers + student.postExam;
             student.improvement = ((student.postTotal - student.preTotal) / student.preTotal * 100).toFixed(1);
+            
+            // دمج بيانات السلوك مع بيانات الطالب
+            const behavior = behaviorData.find(b => b.name === student.name);
+            if (behavior) {
+                student.behavior = behavior;
+            }
         });
 
         // تصنيف الطلاب حسب مستوى التحسن
@@ -775,6 +982,14 @@
             if (improvement >= 10) return { category: "تحسن متوسط", class: "improvement-medium", level: "medium" };
             if (improvement > 0) return { category: "تحسن محدود", class: "improvement-low", level: "low" };
             return { category: "لم يتحسن", class: "improvement-low", level: "none" };
+        }
+
+        // تصنيف السلوكيات
+        function getBehaviorCategory(percentage) {
+            if (percentage >= 90) return { category: "ممتاز", class: "behavior-excellent" };
+            if (percentage >= 70) return { category: "جيد جداً", class: "behavior-good" };
+            if (percentage >= 50) return { category: "متوسط", class: "behavior-average" };
+            return { category: "يحتاج تحسين", class: "behavior-poor" };
         }
 
         // ملء جدول الطلاب
@@ -803,6 +1018,30 @@
                     </td>
                 `;
                 tableBody.appendChild(row);
+            });
+        }
+
+        // ملء جدول السلوكيات
+        function populateBehaviorTable() {
+            const tableBody = document.getElementById('behaviorTableBody');
+            tableBody.innerHTML = '';
+            
+            studentsData.forEach(student => {
+                if (student.behavior) {
+                    const behaviorInfo = getBehaviorCategory(student.behavior.percentage);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.name}</td>
+                        <td>${student.behavior.positive}</td>
+                        <td>${student.behavior.negative}</td>
+                        <td class="${behaviorInfo.class}">${student.behavior.percentage}%</td>
+                        <td class="${behaviorInfo.class}">${behaviorInfo.category}</td>
+                        <td>
+                            <button class="btn" onclick="viewStudentBehavior(${student.id})">تفاصيل</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                }
             });
         }
 
@@ -838,8 +1077,10 @@
             plan.className = 'treatment-plan';
             plan.id = `plan-${studentId}`;
             
-            // تحديد الاستراتيجيات بناءً على مستوى التحسن
+            // تحديد الاستراتيجيات بناءً على مستوى التحسن والسلوك
             let strategies = [];
+            let behaviorStrategies = [];
+            
             if (improvementInfo.level === 'high') {
                 strategies = [
                     "تكليف الطالب بدور المساعد في المجموعات التعليمية",
@@ -863,6 +1104,34 @@
                 ];
             }
             
+            // استراتيجيات سلوكية
+            if (student.behavior) {
+                const behaviorInfo = getBehaviorCategory(student.behavior.percentage);
+                
+                if (behaviorInfo.category === "يحتاج تحسين") {
+                    behaviorStrategies = [
+                        "وضع أهداف سلوكية واضحة وقابلة للتحقيق",
+                        "تعزيز السلوك الإيجابي بمكافآت فورية",
+                        "توفير دعم إضافي لتحسين المشاركة الصفية",
+                        "تعزيز العلاقة الإيجابية مع المعلم والأقران"
+                    ];
+                } else if (behaviorInfo.category === "متوسط") {
+                    behaviorStrategies = [
+                        "تشجيع المشاركة في الأنشطة الصفية",
+                        "تعزيز الثقة بالنفس من خلال التقدير الإيجابي",
+                        "تحديد نقاط القوة السلوكية والبناء عليها",
+                        "تعزيز مهارات التواصل والتعاون"
+                    ];
+                } else {
+                    behaviorStrategies = [
+                        "تكليف الطالب بدور القيادة في الأنشطة الصفية",
+                        "تشجيعه على مساعدة زملائه وتحفيزهم",
+                        "توفير فرص لتمثيل الصف في المناسبات المدرسية",
+                        "تعزيز مهارات القيادة والمسؤولية"
+                    ];
+                }
+            }
+            
             plan.innerHTML = `
                 <div class="treatment-header">
                     <h3>الخطة العلاجية للطالب: ${student.name}</h3>
@@ -874,14 +1143,24 @@
                     <p><strong>الدرجة الإجمالية بعد البرنامج:</strong> ${student.postTotal}</p>
                     <p><strong>نسبة التحسن:</strong> <span class="${improvementInfo.class}">${student.improvement}%</span></p>
                     <p><strong>التصنيف:</strong> ${improvementInfo.category}</p>
+                    ${student.behavior ? `<p><strong>النسبة السلوكية الإيجابية:</strong> <span class="${getBehaviorCategory(student.behavior.percentage).class}">${student.behavior.percentage}%</span></p>` : ''}
                 </div>
                 
                 <div class="treatment-section">
-                    <h4>الاستراتيجيات العلاجية المقترحة</h4>
+                    <h4>الاستراتيجيات العلاجية الأكاديمية</h4>
                     <ul>
                         ${strategies.map(strategy => `<li>${strategy}</li>`).join('')}
                     </ul>
                 </div>
+                
+                ${behaviorStrategies.length > 0 ? `
+                <div class="treatment-section">
+                    <h4>الاستراتيجيات العلاجية السلوكية</h4>
+                    <ul>
+                        ${behaviorStrategies.map(strategy => `<li>${strategy}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
                 
                 <div class="treatment-section">
                     <h4>مؤشرات التقدم المتوقعة</h4>
@@ -915,25 +1194,6 @@
             
             plansContainer.appendChild(plan);
             plansContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // وظائف مساعدة
-        function downloadPlan(studentName) {
-            alert(`جارٍ تحميل الخطة العلاجية للطالب: ${studentName}`);
-            // في التطبيق الحقيقي، هنا سيتم إنشاء ملف PDF للخطة
-        }
-
-        function editPlan(studentId) {
-            alert(`فتح نافذة تعديل الخطة للطالب رقم: ${studentId}`);
-            // في التطبيق الحقيقي، هنا ستفتح نافذة لتعديل الخطة
-        }
-
-        function viewStudentDetails(studentId) {
-            const student = studentsData.find(s => s.id === studentId);
-            if (student) {
-                const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
-                alert(`تفاصيل الطالب:\n\nالاسم: ${student.name}\n\nالدرجات قبل البرنامج:\n- الواجبات: ${student.preHomework}\n- التفاعل الصفي: ${student.preInteraction}\n- بليكرز: ${student.prePlickers}\n- الاختبار: ${student.preExam}\n- الإجمالي: ${student.preTotal}\n\nالدرجات بعد البرنامج:\n- الواجبات: ${student.postHomework}\n- التفاعل الصفي: ${student.postInteraction}\n- بليكرز: ${student.postPlickers}\n- الاختبار: ${student.postExam}\n- الإجمالي: ${student.postTotal}\n\nنسبة التحسن: ${student.improvement}%\nالتصنيف: ${improvementInfo.category}`);
-            }
         }
 
         // إنشاء الرسوم البيانية
@@ -1065,11 +1325,152 @@
                     maintainAspectRatio: false
                 }
             });
+
+            // رسم بياني لتوزيع السلوكيات
+            const behaviorDistributionCtx = document.getElementById('behaviorDistributionChart').getContext('2d');
+            
+            const behaviorCategories = {
+                "ممتاز (90-100%)": behaviorData.filter(b => b.percentage >= 90).length,
+                "جيد جداً (70-89%)": behaviorData.filter(b => b.percentage >= 70 && b.percentage < 90).length,
+                "متوسط (50-69%)": behaviorData.filter(b => b.percentage >= 50 && b.percentage < 70).length,
+                "يحتاج تحسين (أقل من 50%)": behaviorData.filter(b => b.percentage < 50).length
+            };
+            
+            new Chart(behaviorDistributionCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(behaviorCategories),
+                    datasets: [{
+                        data: Object.values(behaviorCategories),
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(100, 181, 246, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(244, 67, 54, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // رسم بياني للمقارنة بين السلوكيات الإيجابية والسلبية
+            const behaviorComparisonCtx = document.getElementById('behaviorComparisonChart').getContext('2d');
+            
+            // حساب المتوسطات
+            const avgPositive = behaviorData.reduce((sum, b) => sum + b.positive, 0) / behaviorData.length;
+            const avgNegative = behaviorData.reduce((sum, b) => sum + b.negative, 0) / behaviorData.length;
+            const avgPercentage = behaviorData.reduce((sum, b) => sum + b.percentage, 0) / behaviorData.length;
+            
+            new Chart(behaviorComparisonCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['النقاط الإيجابية', 'النقاط السلبية', 'النسبة الإيجابية'],
+                    datasets: [{
+                        label: 'المتوسط',
+                        data: [avgPositive, avgNegative, avgPercentage],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(244, 67, 54, 0.7)',
+                            'rgba(54, 162, 235, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // رسم بياني للعلاقة بين السلوك والأداء الأكاديمي
+            const behaviorAcademicCtx = document.getElementById('behaviorAcademicCorrelationChart').getContext('2d');
+            
+            // تجميع البيانات حسب فئات السلوك
+            const excellentBehavior = studentsData.filter(s => s.behavior && s.behavior.percentage >= 90);
+            const goodBehavior = studentsData.filter(s => s.behavior && s.behavior.percentage >= 70 && s.behavior.percentage < 90);
+            const averageBehavior = studentsData.filter(s => s.behavior && s.behavior.percentage >= 50 && s.behavior.percentage < 70);
+            const poorBehavior = studentsData.filter(s => s.behavior && s.behavior.percentage < 50);
+            
+            // حساب متوسط التحسن لكل فئة
+            const avgImprovementExcellent = excellentBehavior.reduce((sum, s) => sum + parseFloat(s.improvement), 0) / excellentBehavior.length;
+            const avgImprovementGood = goodBehavior.reduce((sum, s) => sum + parseFloat(s.improvement), 0) / goodBehavior.length;
+            const avgImprovementAverage = averageBehavior.reduce((sum, s) => sum + parseFloat(s.improvement), 0) / averageBehavior.length;
+            const avgImprovementPoor = poorBehavior.reduce((sum, s) => sum + parseFloat(s.improvement), 0) / poorBehavior.length;
+            
+            new Chart(behaviorAcademicCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['ممتاز (90-100%)', 'جيد جداً (70-89%)', 'متوسط (50-69%)', 'يحتاج تحسين (<50%)'],
+                    datasets: [{
+                        label: 'متوسط التحسن الأكاديمي (%)',
+                        data: [avgImprovementExcellent, avgImprovementGood, avgImprovementAverage, avgImprovementPoor],
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'نسبة التحسن (%)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // وظائف مساعدة
+        function downloadPlan(studentName) {
+            alert(`جارٍ تحميل الخطة العلاجية للطالب: ${studentName}`);
+        }
+
+        function editPlan(studentId) {
+            alert(`فتح نافذة تعديل الخطة للطالب رقم: ${studentId}`);
+        }
+
+        function viewStudentDetails(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            if (student) {
+                const improvementInfo = getImprovementCategory(parseFloat(student.improvement));
+                let behaviorInfo = '';
+                if (student.behavior) {
+                    const behaviorCategory = getBehaviorCategory(student.behavior.percentage);
+                    behaviorInfo = `\nالسلوك:\n- النقاط الإيجابية: ${student.behavior.positive}\n- النقاط السلبية: ${student.behavior.negative}\n- النسبة الإيجابية: ${student.behavior.percentage}%\n- التصنيف: ${behaviorCategory.category}`;
+                }
+                
+                alert(`تفاصيل الطالب:\n\nالاسم: ${student.name}\n\nالدرجات قبل البرنامج:\n- الواجبات: ${student.preHomework}\n- التفاعل الصفي: ${student.preInteraction}\n- بليكرز: ${student.prePlickers}\n- الاختبار: ${student.preExam}\n- الإجمالي: ${student.preTotal}\n\nالدرجات بعد البرنامج:\n- الواجبات: ${student.postHomework}\n- التفاعل الصفي: ${student.postInteraction}\n- بليكرز: ${student.postPlickers}\n- الاختبار: ${student.postExam}\n- الإجمالي: ${student.postTotal}\n\nنسبة التحسن: ${student.improvement}%\nالتصنيف: ${improvementInfo.category}${behaviorInfo}`);
+            }
+        }
+
+        function viewStudentBehavior(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            if (student && student.behavior) {
+                const behaviorCategory = getBehaviorCategory(student.behavior.percentage);
+                alert(`تفاصيل السلوك للطالب:\n\nالاسم: ${student.name}\n\nالنقاط الإيجابية: ${student.behavior.positive}\nالنقاط السلبية: ${student.behavior.negative}\nالنسبة الإيجابية: ${student.behavior.percentage}%\nالتصنيف السلوكي: ${behaviorCategory.category}`);
+            } else {
+                alert('لا توجد بيانات سلوكية لهذا الطالب');
+            }
         }
 
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
             populateStudentsTable();
+            populateBehaviorTable();
             populateStudentSelect();
             createCharts();
             
