@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج أفق - متابعة تطور الطلاب</title>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #4caf50;
+            --accent-color: #ff9800;
+            --light-color: #f5f9ff;
+            --dark-color: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f4f8;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #1e3a6f);
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: var(--light-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .improvement-good {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .improvement-medium {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .improvement-low {
+            color: #f44336;
+            font-weight: bold;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #1e3a6f;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background: #3d8b40;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+        
+        .program-info {
+            background: linear-gradient(135deg, var(--light-color), #e6efff);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">برنامج أفق - متابعة التطور الدراسي</div>
+                <nav>
+                    <ul>
+                        <li><a href="#overview">نظرة عامة</a></li>
+                        <li><a href="#students">الطلاب</a></li>
+                        <li><a href="#comparison">المقارنات</a></li>
+                        <li><a href="#reports">التقارير</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="overview" class="section">
+            <h2 class="section-title">نظرة عامة على البرنامج</h2>
+            <div class="program-info">
+                <h3>برنامج "أفق" لرفع التحصيل الدراسي</h3>
+                <p>برنامج تعليمي يهدف إلى رفع التحصيل الدراسي وتنمية المهارات التعاونية والرقمية لطلاب الصف الأول الثانوي في مادة الكيمياء.</p>
+                <p>يعتمد البرنامج على تحويل الطلاب من متلقين سلبيين إلى منتجين للمعرفة من خلال العمل التعاوني وإعداد بنك أسئلة تفاعلي.</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">39</div>
+                    <div class="stat-label">عدد الطلاب</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">14.3%</div>
+                    <div class="stat-label">متوسط التحسن</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">82%</div>
+                    <div class="stat-label">نسبة الطلاب المحسنين</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">36</div>
+                    <div class="stat-label">عدد المجموعات التعاونية</div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="overviewChart"></canvas>
+            </div>
+        </section>
+
+        <section id="students" class="section">
+            <h2 class="section-title">بيانات الطلاب والدرجات</h2>
+            <div class="form-group">
+                <button class="btn" id="addStudentBtn">إضافة طالب جديد</button>
+                <button class="btn btn-secondary" id="importDataBtn">استيراد البيانات</button>
+            </div>
+            
+            <div class="table-responsive">
+                <table id="studentsTable">
+                    <thead>
+                        <tr>
+                            <th>رقم الطالب</th>
+                            <th>اسم الطالب</th>
+                            <th>الدرجة قبل البرنامج</th>
+                            <th>الدرجة بعد البرنامج</th>
+                            <th>مستوى التحسن</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- سيتم ملؤها بالبيانات -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="comparison" class="section">
+            <h2 class="section-title">مقارنة الأداء قبل وبعد البرنامج</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3 class="card-title">توزيع التحسن</h3>
+                    <div class="chart-container">
+                        <canvas id="improvementChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">مقارنة حسب الفئات</h3>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </section>
+
+        <section id="reports" class="section">
+            <h2 class="section-title">التقارير والتحليلات</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3 class="card-title">تقرير الصف</h3>
+                    <p>عرض شامل لأداء الصف ككل ومقارنة مع المعايير الوطنية.</p>
+                    <button class="btn">عرض التقرير</button>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">تقرير فردي</h3>
+                    <p>إنشاء تقارير مفصلة لكل طالب مع توصيات علاجية.</p>
+                    <button class="btn">إنشاء التقارير</button>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">تحليل النتائج</h3>
+                    <p>تحليل إحصائي متقدم للنتائج وتأثير البرنامج.</p>
+                    <button class="btn">عرض التحليل</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn" id="exportPdfBtn">تصدير إلى PDF</button>
+                <button class="btn btn-secondary" id="exportExcelBtn">تصدير إلى Excel</button>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>برنامج أفق - متابعة تطور الطلاب &copy; 2023</p>
+            <p>ثانوية العلا - الهيئة الملكية بالجبيل</p>
+        </div>
+    </footer>
+
+    <script>
+        // بيانات الطلاب (نموذجية - سيتم استبدالها بالبيانات الفعلية من Firebase)
+        const studentsData = [
+            { id: 1, studentId: "1149464800", name: "أسامة بن أبراهيم بن سعد الدوسري", preScore: 40, postScore: 40, improvement: 0 },
+            { id: 2, studentId: "1151333208", name: "الباسل بن قهد بن جسم الشمري", preScore: 32.75, postScore: 38, improvement: 16.0 },
+            { id: 3, studentId: "1149005066", name: "الوليد بن خالد بن سوئم الروضى الرشيدي", preScore: 29.75, postScore: 36, improvement: 21.0 },
+            { id: 4, studentId: "1152356471", name: "باسل بن يحيى بن علي الزهراني", preScore: 26, postScore: 33, improvement: 26.9 },
+            { id: 5, studentId: "1153935521", name: "برزان بن نايف بن دعسان الشمري", preScore: 22.75, postScore: 31, improvement: 36.3 },
+            { id: 6, studentId: "1153351638", name: "تركي بن محمد بن عوض آل جميوع", preScore: 21.25, postScore: 39, improvement: 83.5 },
+            { id: 7, studentId: "1152626451", name: "حمد بن سعد بن عبدالله الخادي", preScore: 34.75, postScore: 32, improvement: -7.9 },
+            { id: 8, studentId: "1150779252", name: "خالد بن وليد بن محمد الزهراني", preScore: 24.5, postScore: 36, improvement: 46.9 },
+            { id: 9, studentId: "1150352795", name: "رمان بن جيز بن نواف البيضاني الحربي", preScore: 31, postScore: 35, improvement: 12.9 },
+            { id: 10, studentId: "1154277667", name: "رمان بن ناصر بن شويل الأحمر", preScore: 30, postScore: 36, improvement: 20.0 }
+        ];
+
+        // تصنيف الطلاب حسب مستوى التحسن
+        function getImprovementCategory(improvement) {
+            if (improvement >= 20) return { category: "تحسن كبير", class: "improvement-good" };
+            if (improvement >= 10) return { category: "تحسن متوسط", class: "improvement-medium" };
+            if (improvement > 0) return { category: "تحسن محدود", class: "improvement-low" };
+            return { category: "لم يتحسن", class: "improvement-low" };
+        }
+
+        // ملء جدول الطلاب
+        function populateStudentsTable() {
+            const tableBody = document.getElementById('studentsTableBody');
+            tableBody.innerHTML = '';
+            
+            studentsData.forEach(student => {
+                const improvementInfo = getImprovementCategory(student.improvement);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.studentId}</td>
+                    <td>${student.name}</td>
+                    <td>${student.preScore}</td>
+                    <td>${student.postScore}</td>
+                    <td class="${improvementInfo.class}">${improvementInfo.category} (${student.improvement}%)</td>
+                    <td>
+                        <button class="btn" onclick="viewStudentDetails(${student.id})">عرض</button>
+                        <button class="btn btn-secondary" onclick="editStudent(${student.id})">تعديل</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // إنشاء الرسوم البيانية
+        function createCharts() {
+            // رسم بياني للنظرة العامة
+            const overviewCtx = document.getElementById('overviewChart').getContext('2d');
+            new Chart(overviewCtx, {
+                type: 'bar',
+                data: {
+                    labels: studentsData.map(s => s.name.split(' ')[0]),
+                    datasets: [
+                        {
+                            label: 'قبل البرنامج',
+                            data: studentsData.map(s => s.preScore),
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'بعد البرنامج',
+                            data: studentsData.map(s => s.postScore),
+                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 40
+                        }
+                    }
+                }
+            });
+
+            // رسم بياني للتحسن
+            const improvementCtx = document.getElementById('improvementChart').getContext('2d');
+            
+            // تجميع الطلاب حسب فئة التحسن
+            const categories = {
+                "تحسن كبير": studentsData.filter(s => s.improvement >= 20).length,
+                "تحسن متوسط": studentsData.filter(s => s.improvement >= 10 && s.improvement < 20).length,
+                "تحسن محدود": studentsData.filter(s => s.improvement > 0 && s.improvement < 10).length,
+                "لم يتحسن": studentsData.filter(s => s.improvement <= 0).length
+            };
+            
+            new Chart(improvementCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categories),
+                    datasets: [{
+                        data: Object.values(categories),
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(255, 152, 0, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(244, 67, 54, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // رسم بياني للمقارنة
+            const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+            new Chart(comparisonCtx, {
+                type: 'line',
+                data: {
+                    labels: studentsData.map(s => s.name.split(' ')[0]),
+                    datasets: [
+                        {
+                            label: 'قبل البرنامج',
+                            data: studentsData.map(s => s.preScore),
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                            tension: 0.3
+                        },
+                        {
+                            label: 'بعد البرنامج',
+                            data: studentsData.map(s => s.postScore),
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 40
+                        }
+                    }
+                }
+            });
+
+            // رسم بياني للفئات
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(categoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(categories),
+                    datasets: [{
+                        label: 'عدد الطلاب',
+                        data: Object.values(categories),
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(255, 152, 0, 0.7)',
+                            'rgba(255, 193, 7, 0.7)',
+                            'rgba(244, 67, 54, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // وظائف إضافية
+        function viewStudentDetails(studentId) {
+            alert(`عرض تفاصيل الطالب برقم ${studentId}`);
+        }
+
+        function editStudent(studentId) {
+            alert(`تعديل بيانات الطالب برقم ${studentId}`);
+        }
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            populateStudentsTable();
+            createCharts();
+            
+            // إضافة مستمعي الأحداث للأزرار
+            document.getElementById('addStudentBtn').addEventListener('click', function() {
+                alert('فتح نموذج إضافة طالب جديد');
+            });
+            
+            document.getElementById('importDataBtn').addEventListener('click', function() {
+                alert('فتح نافذة استيراد البيانات');
+            });
+            
+            document.getElementById('exportPdfBtn').addEventListener('click', function() {
+                alert('جاري تصدير التقرير إلى PDF');
+            });
+            
+            document.getElementById('exportExcelBtn').addEventListener('click', function() {
+                alert('جاري تصدير التقرير إلى Excel');
+            });
+        });
+
+        // تكوين Firebase (يجب استبدال بالإعدادات الفعلية)
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
+
+        // تهيئة Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+</body>
+</html>
